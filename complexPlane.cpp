@@ -28,8 +28,10 @@ void ComplexPlane::updateRender()
                 size_t iterations = countIterations(coord);
                 Uint8 r,g,b;
                 iterationToRGB(iterations,r, g, b);
+                m_vArray[j + i * m_pixel_size.x].color = {r, g, b};
             }
         }
+        m_state = State::DISPLAYING;
     }
 }
 
@@ -75,10 +77,11 @@ void ComplexPlane::setMouseLocation(Vector2i mousePixel)
 void ComplexPlane::loadText(Text& Text)
 {
     Vector2i currLocation = Mouse::getPosition();
+    Vector2f currLocation2f = mapPixelToCoords(currLocation);
     ostringstream texter;
     texter << "Mandlebrot Set" << endl 
     << "Center: (" << m_plane_center.x << "," << m_plane_center.y << ")" << endl 
-    << "Cursor: (" << currLocation.x << ", " << currLocation.y << ")" << endl 
+    << "Cursor: (" << currLocation2f.x << ", " << currLocation2f.y << ")" << endl 
     << "Left click to zoom in" << endl 
     << "Right click to zoom out" << endl;
     Text.setString(texter.str());
@@ -125,11 +128,42 @@ void ComplexPlane::iterationToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
     if (count == MAX_ITER)
     {
-        r = g = b = 0;
+        r = 0;
+        g = 0;
+        b = 0;
     }
-    else
+    else if (count <= 12 && count > 0)
     {
-        size_t region = count * 5 / MAX_ITER;
+        r = 128;
+        g = 0;
+        b = 128;
+    }
+    else if (count <= 24)
+    {
+        r = 0;
+        g = 128;
+        b = 128;
+    }
+    else if (count <= 36)
+    {
+        r = 0;
+        g = 128;
+        b = 0;
+    }
+    else if (count <= 48)
+    {
+        r = 255;
+        g = 255;
+        b = 0;
+    }
+    else if (count < MAX_ITER)
+    {
+        r = 255;
+        g = 0;
+        b = 0;
+    }
+    
+    /*    size_t region = count * 5 / MAX_ITER;
         size_t remaining = count * 5 % MAX_ITER;
 
         Color color[] = 
@@ -146,5 +180,6 @@ void ComplexPlane::iterationToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
         r = colorOne.r + (colorTwo.r - colorOne.r) * remaining / MAX_ITER;
         g = colorOne.g + (colorTwo.g - colorOne.g) * remaining / MAX_ITER;
         b = colorOne.b + (colorTwo.b - colorOne.b) * remaining / MAX_ITER;
-    }
+    
+    }*/
 }
