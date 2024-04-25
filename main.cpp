@@ -34,13 +34,15 @@ int main()
             {
                 if(event.mouseButton.button == Mouse::Right)
                 {
-                    complexPlane.zoomOut();
                     complexPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    complexPlane.zoomOut();
+                    //complexPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    complexPlane.zoomIn();
                     complexPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    complexPlane.zoomIn();
+                    //complexPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
                 }
             }
             else if (event.type == Event::MouseMoved)
